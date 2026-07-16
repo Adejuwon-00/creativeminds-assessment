@@ -1,0 +1,52 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.symbol {
+  min-width: 0;
+  overflow-wrap: break-word;
+  color: var(--color-text-body);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-button);
+  line-height: var(--line-height-caption);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.updated {
+  min-width: 0;
+  color: var(--color-text-body);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+}
+
+.price {
+  overflow-wrap: break-word;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-ui);
+  font-size: clamp(1.5rem, 1.1rem + 1.5vw, var(--font-size-display));
+  font-weight: var(--font-weight-display);
+  line-height: var(--line-height-display);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}

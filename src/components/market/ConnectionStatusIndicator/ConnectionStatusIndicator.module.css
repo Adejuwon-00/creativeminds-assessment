@@ -1,0 +1,47 @@
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.idle .icon {
+  color: var(--color-text-body);
+}
+
+.connecting .icon,
+.reconnecting .icon {
+  color: var(--color-primary);
+}
+
+.connected .icon {
+  color: var(--color-status-success-text);
+}
+
+.disconnected .icon {
+  color: var(--color-status-error-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .connecting .icon svg,
+  .reconnecting .icon svg {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

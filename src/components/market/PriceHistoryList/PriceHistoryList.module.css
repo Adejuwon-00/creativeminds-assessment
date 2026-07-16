@@ -1,0 +1,59 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-grey-100);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.time {
+  flex-shrink: 0;
+  color: var(--color-text-body);
+  font-size: var(--font-size-caption);
+}
+
+.price {
+  min-width: 0;
+  overflow-wrap: break-word;
+  font-weight: var(--font-weight-button);
+}
+
+.buy {
+  color: var(--color-status-success-text);
+}
+
+.sell {
+  color: var(--color-status-error-text);
+}
+
+.quantity {
+  min-width: 0;
+  overflow-wrap: break-word;
+  color: var(--color-text-body);
+}
+
+.empty {
+  padding-block: var(--space-4);
+  color: var(--color-text-body);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  text-align: center;
+}
