@@ -14,6 +14,13 @@ npm run build      # typecheck + production build (dist/)
 
 Requires Node 18+. The dev server proxies `/binance-api` to `https://api.binance.com` (see `vite.config.ts`); `vercel.json` provides the same rewrite in production.
 
+### Environment variables (all optional)
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `VITE_BINANCE_REST_URL` | `/binance-api` | REST base URL (proxied in dev/Vercel) |
+| `VITE_BINANCE_WS_URL` | `wss://stream.binance.com:443/ws` | WebSocket endpoint |
+
 ## What it does
 
 - Fetches all trading pairs from Binance REST (`/api/v3/exchangeInfo`) into a searchable, filterable list with loading, error (with retry), and empty states.

@@ -9,6 +9,7 @@ vi.mock("./socketInstance", () => ({
   binanceSocket: {
     connect: vi.fn(),
     onConnectionChange: vi.fn(),
+    isDemoMode: vi.fn(() => false),
   },
 }));
 
@@ -25,6 +26,7 @@ describe("useConnectionStatus", () => {
   beforeEach(() => {
     vi.mocked(binanceSocket.connect).mockClear();
     vi.mocked(binanceSocket.onConnectionChange).mockClear();
+    vi.mocked(binanceSocket.isDemoMode).mockReturnValue(false);
   });
 
   it("connects the socket and registers a connection listener on mount", () => {
@@ -59,5 +61,20 @@ describe("useConnectionStatus", () => {
 
     act(() => emit?.("reconnecting"));
     expect(result.current.isReconnecting).toBe(true);
+  });
+
+  it("reports demo mode from the socket service as statuses change", () => {
+    let emit: ((status: ConnectionStatus) => void) | undefined;
+    vi.mocked(binanceSocket.onConnectionChange).mockImplementationOnce((listener) => {
+      emit = listener;
+      return vi.fn();
+    });
+
+    const { result } = renderWithStore();
+    expect(result.current.isDemo).toBe(false);
+
+    vi.mocked(binanceSocket.isDemoMode).mockReturnValue(true);
+    act(() => emit?.("connected"));
+    expect(result.current.isDemo).toBe(true);
   });
 });

@@ -1,34 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/store/hooks";
-import { connectionStatusChanged, selectConnectionError, selectConnectionStatus } from "../app/store/connectionSlice";
+import { connectionStatusChanged, selectConnectionStatus } from "../app/store/connectionSlice";
 import { binanceSocket } from "./socketInstance";
 import type { ConnectionStatus } from "../types/market";
 
 export interface UseConnectionStatusResult {
   status: ConnectionStatus;
-  error: string | null;
   isConnected: boolean;
   isConnecting: boolean;
   isReconnecting: boolean;
+  isDemo: boolean;
 }
 
 export function useConnectionStatus(): UseConnectionStatusResult {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectConnectionStatus);
-  const error = useAppSelector(selectConnectionError);
+  const [isDemo, setIsDemo] = useState(() => binanceSocket.isDemoMode());
 
   useEffect(() => {
     binanceSocket.connect();
+    setIsDemo(binanceSocket.isDemoMode());
     return binanceSocket.onConnectionChange((next) => {
       dispatch(connectionStatusChanged(next));
+      setIsDemo(binanceSocket.isDemoMode());
     });
   }, [dispatch]);
 
   return {
     status,
-    error,
     isConnected: status === "connected",
     isConnecting: status === "connecting",
     isReconnecting: status === "reconnecting",
+    isDemo,
   };
 }

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { getTradingPairs } from "../../services/api/binance";
 import type { ApiError, RequestStatus, TradingPair } from "../../types/market";
 import type { RootState } from "./store";
@@ -72,8 +72,3 @@ export const selectTradingPairs = (state: RootState) => state.market.pairs;
 export const selectMarketStatus = (state: RootState) => state.market.status;
 export const selectMarketError = (state: RootState) => state.market.error;
 export const selectSelectedSymbol = (state: RootState) => state.market.selectedSymbol;
-
-export const selectSelectedTradingPair = createSelector(
-  [selectTradingPairs, selectSelectedSymbol],
-  (pairs, selectedSymbol) => pairs.find((pair) => pair.symbol === selectedSymbol) ?? null,
-);

@@ -1,6 +1,6 @@
 import type { ApiError, TradingPair, TradingPairStatus } from "../../types/market";
 
-const BASE_URL = "/binance-api";
+const BASE_URL = import.meta.env.VITE_BINANCE_REST_URL ?? "/binance-api";
 const REQUEST_TIMEOUT_MS = 10_000;
 
 const TRADING_PAIR_STATUSES: readonly TradingPairStatus[] = [

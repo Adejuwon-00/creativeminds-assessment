@@ -11,7 +11,6 @@ import {
   selectMarketError,
   selectMarketStatus,
   selectSelectedSymbol,
-  selectSelectedTradingPair,
   selectTradingPairs,
   symbolCleared,
   symbolSelected,
@@ -84,22 +83,4 @@ describe("marketSlice", () => {
     });
   });
 
-  describe("selectSelectedTradingPair", () => {
-    it("returns the TradingPair matching the current selection", async () => {
-      vi.mocked(getTradingPairs).mockResolvedValueOnce([btc, eth]);
-      const store = createTestStore();
-      await store.dispatch(fetchTradingPairs());
-      store.dispatch(symbolSelected("ETHUSDT"));
-
-      expect(selectSelectedTradingPair(store.getState())).toEqual(eth);
-    });
-
-    it("returns null when nothing is selected or the selection isn't in the list", () => {
-      const store = createTestStore();
-      expect(selectSelectedTradingPair(store.getState())).toBeNull();
-
-      store.dispatch(symbolSelected("DOESNOTEXIST"));
-      expect(selectSelectedTradingPair(store.getState())).toBeNull();
-    });
-  });
 });

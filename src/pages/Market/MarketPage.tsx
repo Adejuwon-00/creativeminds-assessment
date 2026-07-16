@@ -4,20 +4,11 @@ import { PriceHistory } from "../../components/market/PriceHistory";
 import { TradingPairSearch } from "../../features/market/TradingPairSearch";
 import { useConnectionStatus } from "../../hooks/useConnectionStatus";
 import { useTicker } from "../../hooks/useTicker";
-import { binanceSocket } from "../../hooks/socketInstance";
-import { useState, useEffect } from "react";
 import styles from "./MarketPage.module.css";
 
 export function MarketPage() {
-  const { status } = useConnectionStatus();
+  const { status, isDemo } = useConnectionStatus();
   const { symbol, ticker, trades } = useTicker();
-
-  const [isDemo, setIsDemo] = useState(() => binanceSocket.isDemoMode());
-  useEffect(() => {
-    return binanceSocket.onConnectionChange(() => {
-      setIsDemo(binanceSocket.isDemoMode());
-    });
-  }, []);
 
   return (
     <div className={styles.page}>
