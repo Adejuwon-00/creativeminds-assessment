@@ -1,0 +1,41 @@
+:root {
+
+  --font-family-body: "Montserrat", sans-serif;
+  --font-family-ui: "Poppins", sans-serif;
+  --font-family-chat: "Google Sans Flex", sans-serif;
+
+  --font-size-body: 0.875rem;
+  --font-weight-body: 400;
+  --line-height-body: 1.5rem;
+  --letter-spacing-body: 0;
+
+  --font-size-button: 0.875rem;
+  --font-weight-button: 500;
+  --line-height-button: 1.25rem;
+  --letter-spacing-button: 0.019rem;
+
+  --font-size-caption: 0.75rem;
+  --font-weight-caption: 400;
+  --line-height-caption: 1.125rem;
+  --letter-spacing-caption: 0.019rem;
+
+  --font-size-chat-base: 1rem;
+  --font-weight-chat-base: 600;
+  --line-height-chat-base: 1.5rem;
+  --letter-spacing-chat-base: 0.031rem;
+
+  --font-size-chat-xs: 0.75rem;
+  --font-weight-chat-xs: 500;
+  --line-height-chat-xs: 1rem;
+  --letter-spacing-chat-xs: 0.031rem;
+
+  --font-size-micro: 0.5rem;
+
+  --font-size-display: 2rem;
+  --font-weight-display: 600;
+  --line-height-display: 2.5rem;
+
+  --font-size-heading: 1.5rem;
+  --font-weight-heading: 700;
+  --line-height-heading: 2rem;
+}

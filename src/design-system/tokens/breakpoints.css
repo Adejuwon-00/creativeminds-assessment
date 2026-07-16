@@ -1,0 +1,14 @@
+:root {
+  --bp-sm: 40rem;
+  --bp-md: 48rem;
+  --bp-lg: 64rem;
+  --bp-xl: 80rem;
+  --bp-2xl: 96rem;
+  --bp-dashboard: 120rem;
+
+  --container-canvas: 120rem;
+  --container-sidebar: 16.25rem;
+  --container-content: 100.75rem;
+  --container-aside: 27.6875rem;
+  --container-header: 3.875rem;
+}
