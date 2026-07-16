@@ -1,0 +1,147 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  appearance: none;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-button);
+  line-height: var(--line-height-button);
+  letter-spacing: var(--letter-spacing-button);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    filter 0.15s ease;
+}
+
+.button:disabled:not(.loading) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-grey-900);
+  outline-offset: 2px;
+}
+
+.loading {
+  cursor: progress;
+}
+
+.sm {
+  padding: var(--space-2) var(--space-3);
+}
+
+.md {
+  padding: var(--space-3) var(--space-4);
+}
+
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+.primary:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+.primary:active:not(:disabled) {
+  filter: brightness(0.88);
+}
+
+.gradient {
+  background: var(--gradient-cta);
+  color: var(--color-white);
+}
+.gradient:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+.gradient:active:not(:disabled) {
+  filter: brightness(0.88);
+}
+
+.tonal {
+  background-color: var(--color-primary-tint-strong);
+  color: var(--color-primary);
+}
+.tonal:hover:not(:disabled) {
+  filter: brightness(0.97);
+}
+.tonal:active:not(:disabled) {
+  filter: brightness(0.94);
+}
+
+.secondary {
+  background-color: var(--color-white);
+  color: var(--color-text-heading);
+  border-color: var(--color-grey-300);
+}
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-grey-100);
+}
+.secondary:active:not(:disabled) {
+  background-color: var(--color-grey-300);
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--color-text-body);
+}
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-grey-100);
+}
+.ghost:active:not(:disabled) {
+  background-color: var(--color-grey-300);
+}
+
+.icon {
+  background-color: transparent;
+  color: var(--color-text-heading);
+  padding: var(--space-2);
+  aspect-ratio: 1 / 1;
+}
+.icon:hover:not(:disabled) {
+  background-color: var(--color-grey-100);
+}
+.icon:active:not(:disabled) {
+  background-color: var(--color-grey-300);
+}
+
+.label {
+  display: inline-block;
+}
+
+.iconSlot {
+  display: inline-flex;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex-shrink: 0;
+}
+
+.spinner {
+  display: inline-block;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: 0.7;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1.2s;
+  }
+}
