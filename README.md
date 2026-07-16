@@ -73,3 +73,28 @@ Measured, targeted memoization rather than blanket `React.memo`: the pair list r
 ## Testing
 
 Vitest + Testing Library. Services are tested against fakes (`FakeWebSocket`, stubbed `fetch`), slices against a real store, hooks with `renderHook` + Provider, and components/pages through user-visible behavior (roles, labels, text). Run with `npm test`.
+
+## Error handling
+
+Every failure mode maps to explicit UI: REST failures surface a retry-able error state (with a rate-limit-specific message on HTTP 418/429) and degrade to labeled demo data when Binance is unreachable; socket drops trigger automatic reconnection with visible status; malformed API entries are skipped and logged rather than crashing normalization; and a top-level `ErrorBoundary` catches render-time exceptions with an accessible fallback and a "Try again" reset.
+
+## Deployment
+
+The app is a static Vite build plus one API rewrite:
+
+```bash
+npm run build   # outputs dist/
+```
+
+- **Vercel** — import the repo; `vercel.json` already rewrites `/binance-api/*` to `https://api.binance.com/*`. No other configuration needed.
+- **Netlify** — publish `dist/` and add the equivalent redirect: `/binance-api/* https://api.binance.com/:splat 200`.
+
+The WebSocket connects directly to `wss://stream.binance.com:9443/ws` and needs no proxying.
+
+## Future improvements
+
+- Virtualize the trading-pair list for very low-end devices.
+- Surface a "reconnect attempts exhausted" state instead of retrying indefinitely.
+- Add ESLint (+ hooks/a11y plugins) to enforce conventions mechanically.
+- Multi-symbol watchlists — the socket layer already supports concurrent subscriptions.
+- E2E smoke tests (Playwright) against a stubbed Binance backend.

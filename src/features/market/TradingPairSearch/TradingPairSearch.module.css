@@ -49,6 +49,11 @@
   background-color: var(--color-grey-100);
 }
 
+.row:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
 .selected,
 .selected:hover {
   background-color: var(--color-primary-tint-strong);
