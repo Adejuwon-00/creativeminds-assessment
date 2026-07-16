@@ -3,7 +3,10 @@ export interface CurrentPriceCardProps {
   price: number;
   priceChange: number;
   priceChangePercent: number;
-
+  highPrice?: number;
+  lowPrice?: number;
+  volume?: number;
+  quoteVolume?: number;
   lastUpdated: number;
   className?: string;
 }

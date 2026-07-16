@@ -54,4 +54,24 @@ describe("CurrentPriceCard", () => {
     const { container } = render(<CurrentPriceCard {...baseProps} className="custom-class" />);
     expect(container.firstElementChild?.className).toContain("custom-class");
   });
+
+  it("renders 24h stat tiles when the values are provided", () => {
+    render(
+      <CurrentPriceCard {...baseProps} highPrice={65500} lowPrice={64500} volume={1234.5} quoteVolume={80000000} />,
+    );
+
+    expect(screen.getByText("24h High")).toBeInTheDocument();
+    expect(screen.getByText("65,500.00")).toBeInTheDocument();
+    expect(screen.getByText("24h Low")).toBeInTheDocument();
+    expect(screen.getByText("64,500.00")).toBeInTheDocument();
+    expect(screen.getByText("24h Volume")).toBeInTheDocument();
+    expect(screen.getByText("1,234.50")).toBeInTheDocument();
+    expect(screen.getByText("24h Quote Volume")).toBeInTheDocument();
+    expect(screen.getByText("80,000,000.00")).toBeInTheDocument();
+  });
+
+  it("omits the stats block entirely when no 24h values are given", () => {
+    render(<CurrentPriceCard {...baseProps} />);
+    expect(screen.queryByText("24h High")).not.toBeInTheDocument();
+  });
 });

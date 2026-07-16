@@ -30,7 +30,8 @@ function getScrollArea(container: HTMLElement): HTMLElement {
 describe("PriceHistory", () => {
   it("renders exactly the trades it's given, via PriceHistoryList", () => {
     render(<PriceHistory trades={[tradeB, tradeA]} />);
-    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    const [, ...bodyRows] = screen.getAllByRole("row");
+    expect(bodyRows).toHaveLength(2);
   });
 
   it("renders a heading for context", () => {

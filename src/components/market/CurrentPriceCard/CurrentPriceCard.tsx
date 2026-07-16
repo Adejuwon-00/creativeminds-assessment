@@ -1,12 +1,9 @@
 import { Card } from "../../ui/Card";
 import { TrendIndicator, type TrendDirection } from "../../ui/TrendIndicator";
-import { formatPercent, formatPrice, formatSignedNumber, formatTime } from "../../../utils/formatters";
+import { formatPercent, formatPrice, formatQuantity, formatSignedNumber, formatTime } from "../../../utils/formatters";
+import { joinClassNames } from "../../../utils/joinClassNames";
 import type { CurrentPriceCardProps } from "./CurrentPriceCard.types";
 import styles from "./CurrentPriceCard.module.css";
-
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 function trendDirection(priceChange: number): TrendDirection {
   if (priceChange > 0) return "up";
@@ -14,14 +11,24 @@ function trendDirection(priceChange: number): TrendDirection {
   return "neutral";
 }
 
-export function CurrentPriceCard({
-  symbol,
-  price,
-  priceChange,
-  priceChangePercent,
-  lastUpdated,
-  className,
-}: CurrentPriceCardProps) {
+interface StatTile {
+  label: string;
+  value: string;
+}
+
+function buildStats({ highPrice, lowPrice, volume, quoteVolume }: CurrentPriceCardProps): StatTile[] {
+  const stats: StatTile[] = [];
+  if (highPrice !== undefined) stats.push({ label: "24h High", value: formatPrice(highPrice) });
+  if (lowPrice !== undefined) stats.push({ label: "24h Low", value: formatPrice(lowPrice) });
+  if (volume !== undefined) stats.push({ label: "24h Volume", value: formatQuantity(volume) });
+  if (quoteVolume !== undefined) stats.push({ label: "24h Quote Volume", value: formatQuantity(quoteVolume) });
+  return stats;
+}
+
+export function CurrentPriceCard(props: CurrentPriceCardProps) {
+  const { symbol, price, priceChange, priceChangePercent, lastUpdated, className } = props;
+  const stats = buildStats(props);
+
   return (
     <Card padding="md" className={joinClassNames(styles.card, className)}>
       <div className={styles.header}>
@@ -36,6 +43,17 @@ export function CurrentPriceCard({
           {formatSignedNumber(priceChange)} ({formatPercent(priceChangePercent)})
         </TrendIndicator>
       </div>
+
+      {stats.length > 0 && (
+        <dl className={styles.stats}>
+          {stats.map((stat) => (
+            <div key={stat.label} className={styles.stat}>
+              <dt className={styles.statLabel}>{stat.label}</dt>
+              <dd className={styles.statValue}>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
     </Card>
   );
 }

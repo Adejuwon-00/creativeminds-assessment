@@ -24,10 +24,10 @@ describe("PriceHistoryList", () => {
 
   it("renders one row per trade, newest first as given", () => {
     render(<PriceHistoryList trades={[tradeB, tradeA]} />);
-    const rows = screen.getAllByRole("listitem");
-    expect(rows).toHaveLength(2);
-    expect(rows[0]).toHaveTextContent("Sell");
-    expect(rows[1]).toHaveTextContent("Buy");
+    const [, ...bodyRows] = screen.getAllByRole("row");
+    expect(bodyRows).toHaveLength(2);
+    expect(bodyRows[0]).toHaveTextContent("Sell");
+    expect(bodyRows[1]).toHaveTextContent("Buy");
   });
 
   it("renders price and quantity for each trade", () => {
@@ -36,9 +36,12 @@ describe("PriceHistoryList", () => {
     expect(screen.getByText("0.10")).toBeInTheDocument();
   });
 
-  it("labels the list for assistive tech", () => {
+  it("renders as a labelled table with column headers", () => {
     render(<PriceHistoryList trades={[tradeA]} />);
-    expect(screen.getByRole("list")).toHaveAttribute("aria-label", "Recent trades");
+    expect(screen.getByRole("table")).toHaveAttribute("aria-label", "Recent trades");
+    for (const header of ["Time", "Price", "Quantity", "Side"]) {
+      expect(screen.getByRole("columnheader", { name: header })).toBeInTheDocument();
+    }
   });
 
   it("does not re-render unchanged rows when a new trade is prepended", () => {
@@ -53,6 +56,6 @@ describe("PriceHistoryList", () => {
 
   it("merges a caller-supplied className", () => {
     render(<PriceHistoryList trades={[tradeA]} className="custom-class" />);
-    expect(screen.getByRole("list").className).toContain("custom-class");
+    expect(screen.getByRole("table").className).toContain("custom-class");
   });
 });

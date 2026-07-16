@@ -4,12 +4,10 @@ import { SectionHeader } from "../../ui/SectionHeader";
 import { PriceHistoryList } from "../PriceHistoryList";
 import type { PriceHistoryProps } from "./PriceHistory.types";
 import styles from "./PriceHistory.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
 const AUTO_SCROLL_THRESHOLD_PX = 8;
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const PriceHistory = memo(function PriceHistory({ trades, className }: PriceHistoryProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
