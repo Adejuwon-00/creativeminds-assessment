@@ -99,6 +99,21 @@ describe("getTradingPairs", () => {
     expect(pairs).toEqual(MOCK_PAIRS);
   });
 
+  it("reports a rate-limit-specific error before falling back on HTTP 429", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    vi.mocked(fetch).mockResolvedValueOnce(
+      jsonResponse({ code: -1003, msg: "Too many requests." }, { ok: false, status: 429 }),
+    );
+
+    const pairs = await getTradingPairs();
+
+    expect(pairs).toEqual(MOCK_PAIRS);
+    const reportedError = warn.mock.calls[warn.mock.calls.length - 1]?.[1] as { message: string; status: number };
+    expect(reportedError.status).toBe(429);
+    expect(reportedError.message).toContain("rate-limiting");
+    warn.mockRestore();
+  });
+
   it("falls back to MOCK_PAIRS when a non-2xx response has no parseable error body", async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: false,

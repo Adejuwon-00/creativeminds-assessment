@@ -66,10 +66,17 @@ async function safeParseJson<T>(response: Response): Promise<T | null> {
   }
 }
 
+const RATE_LIMIT_STATUSES = new Set([418, 429]);
+
 async function toResponseError(response: Response): Promise<ApiError> {
   const body = await safeParseJson<RawBinanceErrorBody>(response);
-  const message = typeof body?.msg === "string" ? body.msg : `Binance responded with HTTP ${response.status}.`;
   const code = typeof body?.code === "number" ? body.code : undefined;
+
+  if (RATE_LIMIT_STATUSES.has(response.status)) {
+    return toApiError("Binance is rate-limiting requests. Please wait a moment and retry.", response.status, code);
+  }
+
+  const message = typeof body?.msg === "string" ? body.msg : `Binance responded with HTTP ${response.status}.`;
   return toApiError(message, response.status, code);
 }
 
