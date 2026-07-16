@@ -136,27 +136,40 @@ function normalizeTradingPair(raw: unknown): TradingPair | null {
   };
 }
 
+function isNetworkLevelError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    typeof (error as ApiError).message === "string" &&
+    (error as ApiError).status === undefined
+  );
+}
+
 export async function getTradingPairs(): Promise<TradingPair[]> {
+  let data: RawExchangeInfoResponse;
   try {
-    const data = await request<RawExchangeInfoResponse>("/api/v3/exchangeInfo");
-
-    if (!Array.isArray(data.symbols)) {
-      throw toApiError("Binance's exchangeInfo response did not include a symbols list.");
-    }
-
-    const pairs: TradingPair[] = [];
-    for (const raw of data.symbols) {
-      const pair = normalizeTradingPair(raw);
-      if (pair) {
-        pairs.push(pair);
-      } else {
-        console.warn("[binance] Skipped a malformed symbol entry from exchangeInfo:", raw);
-      }
-    }
-
-    return pairs;
+    data = await request<RawExchangeInfoResponse>("/api/v3/exchangeInfo");
   } catch (error) {
-    console.warn("[binance] Could not reach Binance REST API — using demo pairs.", error);
-    return MOCK_PAIRS;
+    if (isNetworkLevelError(error)) {
+      console.warn("[binance] Could not reach Binance REST API — using demo pairs.", error);
+      return MOCK_PAIRS;
+    }
+    throw error;
   }
+
+  if (!Array.isArray(data.symbols)) {
+    throw toApiError("Binance's exchangeInfo response did not include a symbols list.");
+  }
+
+  const pairs: TradingPair[] = [];
+  for (const raw of data.symbols) {
+    const pair = normalizeTradingPair(raw);
+    if (pair) {
+      pairs.push(pair);
+    } else {
+      console.warn("[binance] Skipped a malformed symbol entry from exchangeInfo:", raw);
+    }
+  }
+
+  return pairs;
 }

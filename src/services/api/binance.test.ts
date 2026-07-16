@@ -76,45 +76,47 @@ describe("getTradingPairs", () => {
     expect(warnSpy).toHaveBeenCalledTimes(4);
   });
 
-  it("falls back to MOCK_PAIRS when the symbols array is missing entirely", async () => {
+  it("rejects with a data error when the symbols array is missing entirely", async () => {
     vi.mocked(fetch).mockResolvedValueOnce(jsonResponse({ timezone: "UTC" }));
 
-    const pairs = await getTradingPairs();
-    expect(pairs).toEqual(MOCK_PAIRS);
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: "Binance's exchangeInfo response did not include a symbols list.",
+    });
   });
 
   it("falls back to MOCK_PAIRS on a network failure", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.mocked(fetch).mockRejectedValueOnce(new TypeError("Failed to fetch"));
 
     const pairs = await getTradingPairs();
     expect(pairs).toEqual(MOCK_PAIRS);
+    warn.mockRestore();
   });
 
-  it("falls back to MOCK_PAIRS on a non-2xx response", async () => {
+  it("rejects with the Binance error message on a non-2xx response", async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ code: -1121, msg: "Invalid symbol." }, { ok: false, status: 400 }),
     );
 
-    const pairs = await getTradingPairs();
-    expect(pairs).toEqual(MOCK_PAIRS);
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: "Invalid symbol.",
+      status: 400,
+      code: -1121,
+    });
   });
 
-  it("reports a rate-limit-specific error before falling back on HTTP 429", async () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+  it("rejects with a rate-limit-specific error on HTTP 429", async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ code: -1003, msg: "Too many requests." }, { ok: false, status: 429 }),
     );
 
-    const pairs = await getTradingPairs();
-
-    expect(pairs).toEqual(MOCK_PAIRS);
-    const reportedError = warn.mock.calls[warn.mock.calls.length - 1]?.[1] as { message: string; status: number };
-    expect(reportedError.status).toBe(429);
-    expect(reportedError.message).toContain("rate-limiting");
-    warn.mockRestore();
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: "Binance is rate-limiting requests. Please wait a moment and retry.",
+      status: 429,
+    });
   });
 
-  it("falls back to MOCK_PAIRS when a non-2xx response has no parseable error body", async () => {
+  it("rejects with a generic HTTP error when a non-2xx response has no parseable error body", async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: false,
       status: 503,
@@ -123,11 +125,13 @@ describe("getTradingPairs", () => {
       },
     } as unknown as Response);
 
-    const pairs = await getTradingPairs();
-    expect(pairs).toEqual(MOCK_PAIRS);
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: "Binance responded with HTTP 503.",
+      status: 503,
+    });
   });
 
-  it("falls back to MOCK_PAIRS when a 2xx response body isn't valid JSON", async () => {
+  it("rejects when a 2xx response body isn't valid JSON", async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: true,
       status: 200,
@@ -136,8 +140,7 @@ describe("getTradingPairs", () => {
       },
     } as unknown as Response);
 
-    const pairs = await getTradingPairs();
-    expect(pairs).toEqual(MOCK_PAIRS);
+    await expect(getTradingPairs()).rejects.toMatchObject({ status: 200 });
   });
 
   it("falls back to MOCK_PAIRS when the request exceeds the timeout", async () => {
