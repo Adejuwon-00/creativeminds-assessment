@@ -30,6 +30,10 @@
   color: var(--color-status-error-text);
 }
 
+.demo .icon {
+  color: var(--color-status-warning-text);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .connecting .icon svg,
   .reconnecting .icon svg {

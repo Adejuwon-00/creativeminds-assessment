@@ -27,7 +27,14 @@ const MOCK_BASE_PRICES: Record<string, number> = {
 };
 
 function getMockBase(symbol: string): number {
-  return MOCK_BASE_PRICES[symbol.toUpperCase()] ?? 1;
+  const known = MOCK_BASE_PRICES[symbol.toUpperCase()];
+  if (known !== undefined) return known;
+
+  let hash = 0;
+  for (const char of symbol.toUpperCase()) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return 0.05 + (hash % 200_000) / 100;
 }
 
 function jitter(value: number, pct = 0.003): number {

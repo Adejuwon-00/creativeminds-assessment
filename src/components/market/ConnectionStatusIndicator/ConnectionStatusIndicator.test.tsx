@@ -61,6 +61,12 @@ describe("ConnectionStatusIndicator", () => {
     expect(screen.getByRole("status").className).toContain("custom-class");
   });
 
+  it("overrides the label with Simulated when demo mode is active", () => {
+    render(<ConnectionStatusIndicator status="connected" isDemo />);
+    expect(screen.getByText("Simulated")).toBeInTheDocument();
+    expect(screen.queryByText("Connected")).not.toBeInTheDocument();
+  });
+
   it("is memoized: does not re-render when its parent re-renders but `status` stays the same", () => {
     function Harness() {
       const [, forceRerender] = useState(0);

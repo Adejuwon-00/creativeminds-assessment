@@ -3,6 +3,7 @@ import { Badge, type BadgeVariant } from "../../ui/Badge";
 import { ConnectedIcon, ConnectingIcon, DisconnectedIcon, IdleIcon, ReconnectingIcon } from "./icons";
 import type { ConnectionStatusIndicatorProps } from "./ConnectionStatusIndicator.types";
 import styles from "./ConnectionStatusIndicator.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
 const LABEL: Record<ConnectionStatusIndicatorProps["status"], string> = {
   idle: "Idle",
@@ -28,27 +29,26 @@ const ICON: Record<ConnectionStatusIndicatorProps["status"], () => JSX.Element> 
   disconnected: DisconnectedIcon,
 };
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const ConnectionStatusIndicator = memo(function ConnectionStatusIndicator({
   status,
+  isDemo = false,
   className,
 }: ConnectionStatusIndicatorProps) {
-  const Icon = ICON[status];
-  const label = LABEL[status];
+  const Icon = isDemo ? ReconnectingIcon : ICON[status];
+  const label = isDemo ? "Simulated" : LABEL[status];
+  const variant: BadgeVariant = isDemo ? "warning" : BADGE_VARIANT[status];
 
   return (
     <span
       role="status"
       aria-live="polite"
-      className={joinClassNames(styles.indicator, styles[status], className)}
+      className={joinClassNames(styles.indicator, isDemo ? styles.demo : styles[status], className)}
     >
       <span className={styles.icon}>
         <Icon />
       </span>
-      <Badge variant={BADGE_VARIANT[status]} dot={false} size="sm">
+      <Badge variant={variant} dot={false} size="sm">
         {label}
       </Badge>
     </span>

@@ -14,7 +14,7 @@ export function MarketPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.title}>Market</h1>
-        <ConnectionStatusIndicator status={status} />
+        <ConnectionStatusIndicator status={status} isDemo={isDemo} />
       </div>
 
       {isDemo && (
@@ -39,6 +39,10 @@ export function MarketPage() {
               price={ticker.lastPrice}
               priceChange={ticker.priceChange}
               priceChangePercent={ticker.priceChangePercent}
+              highPrice={ticker.highPrice}
+              lowPrice={ticker.lowPrice}
+              volume={ticker.volume}
+              quoteVolume={ticker.quoteVolume}
               lastUpdated={ticker.closeTime}
             />
           )}
