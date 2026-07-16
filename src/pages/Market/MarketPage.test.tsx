@@ -117,6 +117,6 @@ describe("MarketPage", () => {
 
     act(() => emitTrade?.({ id: 1, symbol: "BTCUSDT", price: 65000, quantity: 0.1, side: "buy", timestamp: 1 }));
     expect(screen.getByRole("heading", { name: "Recent Trades" })).toBeInTheDocument();
-    expect(screen.getByRole("list", { name: "Recent trades" })).toBeInTheDocument();
+    expect(screen.getByRole("table", { name: "Recent trades" })).toBeInTheDocument();
   });
 });

@@ -6,10 +6,8 @@ import { SearchInput } from "../../../components/ui/SearchInput";
 import { useTradingPairs } from "../../../hooks/useTradingPairs";
 import type { TradingPair } from "../../../types/market";
 import styles from "./TradingPairSearch.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 function matchesQuery(pair: TradingPair, query: string): boolean {
   if (!query) return true;

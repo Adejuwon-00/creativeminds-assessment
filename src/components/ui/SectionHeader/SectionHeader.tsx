@@ -1,5 +1,6 @@
 import type { ElementType } from "react";
 import styles from "./SectionHeader.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
 export interface SectionHeaderAction {
   label: string;
@@ -15,9 +16,6 @@ export interface SectionHeaderProps {
   className?: string;
 }
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 const ArrowIcon = () => (
   <svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true">

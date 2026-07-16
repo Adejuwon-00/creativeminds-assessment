@@ -1,10 +1,8 @@
 import { forwardRef, type ElementType } from "react";
 import type { CardElement, CardProps } from "./Card.types";
 import styles from "./Card.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const Card = forwardRef<CardElement, CardProps>(function Card(
   { padding = "md", radius = "lg", shadow = false, outlined = true, interactive = false, as, className, children, ...rest },

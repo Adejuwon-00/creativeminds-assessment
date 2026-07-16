@@ -1,5 +1,6 @@
 import type { TrendDirection, TrendIndicatorProps } from "./TrendIndicator.types";
 import styles from "./TrendIndicator.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
 const DIRECTION_PREFIX: Record<TrendDirection, string> = {
   up: "Increased: ",
@@ -35,9 +36,6 @@ function TrendArrow({ direction }: { direction: TrendDirection }) {
   );
 }
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export function TrendIndicator({ direction, children, className }: TrendIndicatorProps) {
   return (

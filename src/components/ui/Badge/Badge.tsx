@@ -1,10 +1,8 @@
 import { forwardRef } from "react";
 import type { BadgeProps } from "./Badge.types";
 import styles from "./Badge.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   { variant = "neutral", size = "sm", dot = true, className, children, ...rest },

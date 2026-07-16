@@ -1,10 +1,8 @@
 import { forwardRef } from "react";
 import type { ButtonProps } from "./Button.types";
 import styles from "./Button.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {

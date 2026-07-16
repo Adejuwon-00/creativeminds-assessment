@@ -1,10 +1,8 @@
 import { forwardRef, useId } from "react";
 import type { InputProps } from "./Input.types";
 import styles from "./Input.module.css";
+import { joinClassNames } from "../../../utils/joinClassNames";
 
-function joinClassNames(...classNames: Array<string | false | undefined>): string {
-  return classNames.filter(Boolean).join(" ");
-}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
