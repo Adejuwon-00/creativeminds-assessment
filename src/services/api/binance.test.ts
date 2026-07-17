@@ -105,6 +105,17 @@ describe("getTradingPairs", () => {
     });
   });
 
+  it("rejects with a region-specific error on HTTP 451 geo-blocks", async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(
+      jsonResponse({ code: 0, msg: "Service unavailable from a restricted location." }, { ok: false, status: 451 }),
+    );
+
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: expect.stringContaining("not available in your current region"),
+      status: 451,
+    });
+  });
+
   it("rejects with a rate-limit-specific error on HTTP 429", async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       jsonResponse({ code: -1003, msg: "Too many requests." }, { ok: false, status: 429 }),

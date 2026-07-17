@@ -67,6 +67,7 @@ async function safeParseJson<T>(response: Response): Promise<T | null> {
 }
 
 const RATE_LIMIT_STATUSES = new Set([418, 429]);
+const GEO_BLOCKED_STATUS = 451;
 
 async function toResponseError(response: Response): Promise<ApiError> {
   const body = await safeParseJson<RawBinanceErrorBody>(response);
@@ -74,6 +75,14 @@ async function toResponseError(response: Response): Promise<ApiError> {
 
   if (RATE_LIMIT_STATUSES.has(response.status)) {
     return toApiError("Binance is rate-limiting requests. Please wait a moment and retry.", response.status, code);
+  }
+
+  if (response.status === GEO_BLOCKED_STATUS) {
+    return toApiError(
+      "Binance is not available in your current region. If you are using a VPN, switch to a region where Binance operates and retry.",
+      response.status,
+      code,
+    );
   }
 
   const message = typeof body?.msg === "string" ? body.msg : `Binance responded with HTTP ${response.status}.`;
