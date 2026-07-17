@@ -23,9 +23,9 @@ Requires Node 18+. The dev server proxies `/binance-api` to `https://api.binance
 
 ## What it does
 
-- Fetches all trading pairs from Binance REST (`/api/v3/exchangeInfo`) into a searchable, filterable list with loading, error (with retry), and empty states.
+- Fetches all trading pairs from Binance REST (`/api/v3/exchangeInfo`) into a searchable, filterable list with skeleton loading rows, error (with retry), and empty states.
 - Selecting a pair opens a WebSocket to `wss://stream.binance.com:9443/ws` and subscribes to that symbol's ticker and trade streams.
-- Shows the live price with 24h change and trend, plus a capped history of recent trades.
+- Shows the live price with 24h change, trend, and 24h high/low/volume stat tiles, plus a capped history of recent trades in a labelled table.
 - Shows connection status (Connecting / Connected / Disconnected / Reconnecting) with automatic exponential-backoff reconnection and full resubscription after a drop.
 - Persists the selected trading pair to `localStorage` and restores it on reload.
 - If Binance is unreachable from the current network (it is DNS-blocked in some regions), the socket layer falls back to a clearly labeled demo simulation instead of failing silently.
