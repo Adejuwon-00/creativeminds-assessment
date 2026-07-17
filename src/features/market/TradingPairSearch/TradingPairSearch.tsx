@@ -29,7 +29,12 @@ const PairRow = memo(function PairRow({ pair, isSelected, onSelect }: PairRowPro
         aria-pressed={isSelected}
         onClick={() => onSelect(pair.symbol)}
       >
-        <span className={styles.symbol}>{pair.symbol}</span>
+        <span className={styles.pairText}>
+          <span className={styles.symbol}>{pair.symbol}</span>
+          <span className={styles.assets}>
+            {pair.baseAsset} / {pair.quoteAsset}
+          </span>
+        </span>
         <Badge variant={pair.status === "TRADING" ? "success" : "neutral"} dot={false} size="sm">
           {pair.status}
         </Badge>
@@ -37,6 +42,21 @@ const PairRow = memo(function PairRow({ pair, isSelected, onSelect }: PairRowPro
     </li>
   );
 });
+
+const SKELETON_ROW_COUNT = 8;
+
+const LoadingSkeleton = () => (
+  <>
+    <p role="status" className={styles.visuallyHidden}>
+      Loading trading pairs…
+    </p>
+    <div aria-hidden="true" className={styles.skeletonList}>
+      {Array.from({ length: SKELETON_ROW_COUNT }, (_, index) => (
+        <span key={index} className={styles.skeletonRow} />
+      ))}
+    </div>
+  </>
+);
 
 export const TradingPairSearch = memo(function TradingPairSearch() {
   const [query, setQuery] = useState("");
@@ -67,7 +87,7 @@ export const TradingPairSearch = memo(function TradingPairSearch() {
         </div>
       )}
 
-      {!isError && isLoading && pairs.length === 0 && <p className={styles.state}>Loading trading pairs…</p>}
+      {!isError && isLoading && pairs.length === 0 && <LoadingSkeleton />}
 
       {!isError && !isLoading && filteredPairs.length === 0 && (
         <p className={styles.state}>

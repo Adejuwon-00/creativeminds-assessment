@@ -1,0 +1,41 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-6);
+  border: 1px solid var(--color-grey-300);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-white);
+  text-align: center;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--color-primary-tint);
+  color: var(--color-primary);
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text-heading);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-chat-base);
+  font-weight: var(--font-weight-chat-base);
+  line-height: var(--line-height-chat-base);
+}
+
+.hint {
+  margin: 0;
+  max-width: 26rem;
+  color: var(--color-text-body);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
