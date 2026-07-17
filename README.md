@@ -85,6 +85,15 @@ Vitest + Testing Library. Services are tested against fakes (`FakeWebSocket`, st
 
 Every failure mode maps to explicit UI: REST failures surface a retry-able error state (with a rate-limit-specific message on HTTP 418/429) and degrade to labeled demo data when Binance is unreachable; socket drops trigger automatic reconnection with visible status; malformed API entries are skipped and logged rather than crashing normalization; and a top-level `ErrorBoundary` catches render-time exceptions with an accessible fallback and a "Try again" reset.
 
+## Regional availability (VPN note)
+
+Binance geo-restricts its public API. From a blocked or restricted region — including the **US, UK, Canada, Netherlands, Belgium, Singapore, and Japan** — the REST API returns **HTTP 451** and the WebSocket will not connect. The app handles both explicitly:
+
+- REST 451 → a visible error state with an actionable message and a Retry button.
+- WebSocket failure → automatic fallback to a clearly labelled demo simulation, with the connection indicator showing **Simulated** instead of a false "Connected".
+
+If you are using a VPN, pick an exit region where Binance operates (for example Germany, France, Italy, Spain, Brazil, South Africa, or UAE), then press Retry — no reload required. Note that some networks also block `binance.com` at the DNS level; in that case the app degrades the same way until the network allows the lookup.
+
 ## Deployment
 
 The app is a static Vite build plus one API rewrite:
