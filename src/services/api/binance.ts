@@ -106,6 +106,13 @@ async function request<T>(path: string): Promise<T> {
   }
 
   if (!response.ok) {
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.includes("json")) {
+      throw toApiError(
+        `This deployment isn't proxying ${BASE_URL} to Binance (got HTTP ${response.status} with a non-JSON body, most likely this host's own error page rather than a Binance response). Check the platform's rewrite/redirect configuration.`,
+        response.status,
+      );
+    }
     throw await toResponseError(response);
   }
 

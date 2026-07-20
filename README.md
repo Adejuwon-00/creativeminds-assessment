@@ -103,7 +103,9 @@ npm run build   # outputs dist/
 ```
 
 - **Vercel** — import the repo; `vercel.json` already rewrites `/binance-api/*` to `https://api.binance.com/*`. No other configuration needed.
-- **Netlify** — publish `dist/` and add the equivalent redirect: `/binance-api/* https://api.binance.com/:splat 200`.
+- **Netlify** — import the repo; `netlify.toml` already sets the build command, publish directory, and the equivalent `/binance-api/*` redirect. No other configuration needed.
+
+If a REST error ever reads *"This deployment isn't proxying..."*, that's the app itself detecting a missing/broken rewrite (a non-JSON response came back from `/binance-api/*`) rather than a Binance error — check the platform's redirect config.
 
 The WebSocket connects directly to `wss://stream.binance.com:9443/ws` and needs no proxying.
 

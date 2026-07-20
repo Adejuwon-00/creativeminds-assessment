@@ -5,8 +5,20 @@ function jsonResponse(body: unknown, init?: { status?: number; ok?: boolean }) {
   return {
     ok: init?.ok ?? true,
     status: init?.status ?? 200,
+    headers: new Headers({ "content-type": "application/json" }),
     json: async () => body,
   } as Response;
+}
+
+function htmlResponse(status: number) {
+  return {
+    ok: false,
+    status,
+    headers: new Headers({ "content-type": "text/html" }),
+    json: async () => {
+      throw new SyntaxError("Unexpected token");
+    },
+  } as unknown as Response;
 }
 
 function validSymbol(overrides: Record<string, unknown> = {}) {
@@ -127,10 +139,11 @@ describe("getTradingPairs", () => {
     });
   });
 
-  it("rejects with a generic HTTP error when a non-2xx response has no parseable error body", async () => {
+  it("rejects with a generic HTTP error when Binance returns a non-2xx JSON response with no parseable error body", async () => {
     vi.mocked(fetch).mockResolvedValueOnce({
       ok: false,
       status: 503,
+      headers: new Headers({ "content-type": "application/json" }),
       json: async () => {
         throw new SyntaxError("Unexpected token");
       },
@@ -139,6 +152,15 @@ describe("getTradingPairs", () => {
     await expect(getTradingPairs()).rejects.toMatchObject({
       message: "Binance responded with HTTP 503.",
       status: 503,
+    });
+  });
+
+  it("rejects with a deployment-misconfiguration error when the proxy path returns the host's own non-JSON error page", async () => {
+    vi.mocked(fetch).mockResolvedValueOnce(htmlResponse(404));
+
+    await expect(getTradingPairs()).rejects.toMatchObject({
+      message: expect.stringContaining("isn't proxying"),
+      status: 404,
     });
   });
 
