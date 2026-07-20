@@ -1,6 +1,6 @@
 import type { ConnectionStatus, Ticker, Trade } from "../../types/market";
 
-const WS_URL = import.meta.env.VITE_BINANCE_WS_URL ?? "wss://stream.binance.com:443/ws";
+const WS_URL = import.meta.env.VITE_BINANCE_WS_URL ?? "wss://stream.binance.com:9443/ws";
 const INITIAL_RECONNECT_DELAY_MS = 1_000;
 const MAX_RECONNECT_DELAY_MS = 30_000;
 const FAILURES_BEFORE_DEMO = 1;

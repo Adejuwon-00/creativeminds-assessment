@@ -19,7 +19,7 @@ Requires Node 18+. The dev server proxies `/binance-api` to `https://api.binance
 | Variable | Default | Purpose |
 |---|---|---|
 | `VITE_BINANCE_REST_URL` | `/binance-api` | REST base URL (proxied in dev/Vercel) |
-| `VITE_BINANCE_WS_URL` | `wss://stream.binance.com:443/ws` | WebSocket endpoint |
+| `VITE_BINANCE_WS_URL` | `wss://stream.binance.com:9443/ws` | WebSocket endpoint |
 
 ## What it does
 

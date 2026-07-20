@@ -112,7 +112,7 @@ describe("createBinanceSocket", () => {
     socket.onConnectionChange((status) => statuses.push(status));
 
     socket.connect();
-    expect(lastSocket().url).toBe("wss://stream.binance.com:443/ws");
+    expect(lastSocket().url).toBe("wss://stream.binance.com:9443/ws");
     expect(statuses).toEqual(["connecting"]);
 
     lastSocket().emitOpen();
